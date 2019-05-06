@@ -1,0 +1,40 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+}
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: block;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	*zoom: 1;
+}
+header, section, footer, aside, nav, article, figure {
+	display: block;
+}
+ol, ul {
+	list-style-type: none;
+}
+a {
+	text-decoration: none;
+}
+body {
+	background-color: #fefefe;
+	font-family: "Helvetica Neue", Arial, adelle-sans, sans-serif;
+	color: #000;
+}
+#game {
+	position: relative;
+	margin: 0 auto;
+}
+#canvasBg, #canvasContent {
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: url('glow.cur'), pointer;
+}

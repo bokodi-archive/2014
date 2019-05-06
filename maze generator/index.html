@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maze generator</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="main.css">
+	<script>
+		var ifIE = navigator.userAgent.match(/(?:MSIE |Trident\/.*; rv:)(\d+)/);
+		if (ifIE && ifIE[1] < 10) { // if ie version is less than 10: download a real browser
+			window.location.href = 'https://www.google.com/intl/en/chrome/browser/';
+		}
+	</script>
+	<script src="mazeLib.js"></script>
+	<script src="mazeGenerator.js"></script>
+</head>
+<body>
+	
+	<div id="wrapper">
+		<div id="header">
+			<h1>Maze generator</h1>
+		</div>
+		<div id="container">
+			<div id="options">
+				<form>
+					<fieldset>
+						<legend id="settings">Settings</legend>
+						<div id="optionsbox">
+							<p>
+								<label for="row">Rows:</label>
+								<input id="row" name="row" type="number" value="50" min="2" />
+							</p>
+							<hr>
+							<p>
+								<label for="col">Columns:</label>
+								<input id="col" name="col" type="number" value="120" min="2" />
+							</p>
+							<hr>
+							<p>
+								<label for="block">Block size (px):</label>
+								<input id="block" name="block" type="number" value="10" min="5" />
+							</p>
+							<hr>
+							<button id="generate">Generate!</button>
+						</div>
+					</fieldset>
+				</form>				
+			</div>
+			<div id="mazebox">
+				<canvas id="mazeCanvas" width="0" height="0">Your browser doesn't support the HTML5 canvas tag!</canvas>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

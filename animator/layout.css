@@ -1,0 +1,150 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+}
+ol, ul {
+	list-style-type: none;
+}
+body {
+	margin: 8px;
+	background-color: #3c3c3c;
+	font-family: "Helvetica Neue", Arial, adelle-sans, sans-serif;
+	line-height: 1;
+	color: #000;
+}
+button {
+	padding: 1px 6px;
+	background-color: #e4e4e4;
+	cursor: pointer;
+}
+button:hover {
+	background-color: #ebebeb;
+}
+input {
+	padding: 2px;
+}
+input[type=number] {
+	width: 50px;
+}
+input, button, select {
+	border: 1px outset #959595;
+	border-radius: 2px;
+}
+.hidden {
+	display: none;
+}
+
+div#left_column,
+div#middle_column,
+div#right_column {
+	float: left;
+}
+div#left_column,
+div#middle_column {
+	margin-right: 15px;
+}
+div#middle_column {
+	width: 300px;
+}
+div#right_column {
+	width: 600px;
+	position: relative;
+	background-color: #abcdef;
+}
+
+canvas#c {
+	border: 1px solid #efefef;
+}
+
+div#options {
+	margin-bottom: 15px;
+}
+
+div#options,
+div#info_box {
+	padding: 15px;
+	background-color: #abcdef;
+}
+div#options div.option_row {
+	margin-bottom: 20px;
+}
+div#options div.option_row label {
+	color: #F0FFFF;
+}
+
+div#options div#frames_box {
+	height: 75px;
+}
+
+div#options div#edit_box p,
+div#options div#frames_box p {
+	margin: 5px 0;
+}
+div#options div#edit_box p label,
+div#options div#frames_box p label {
+	width: 90px;
+	display: inline-block;
+}
+
+div#options div#edit_box p select#size_unit {
+	width: 100px;
+	padding: 14px 3px;
+	float: right;
+}
+
+div#options div#frames_box select#frame_type {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+div#options div#frames_box a#frames_mixed_help {
+	padding: 1px 5px;
+	border-radius: 8px;
+	background-color: #708090;
+	font-family: serif;
+	font-size: 12px;
+	text-decoration: none;
+	color: #fff;
+}
+
+div#upload_box input#source {
+	width: 200px;
+	padding: 3px;
+	border: none;
+	background-color: #F0F8FF;
+	cursor: pointer;
+}
+
+#info_box div {
+	margin: 5px 0;
+	color: #F0FFFF;
+}
+#info_box div span {
+	color: #000000;
+}
+
+div#right_column figure#figura {
+	margin: 15px 15px 0px 15px;
+	position: relative;
+}
+div#right_column figure#figura img#source_view {
+	width: 100%;
+	height: auto;
+}
+div#right_column figure#figura figcaption#source_name {
+	margin: 10px 0;
+	padding: 4px;
+	display: inline-block;
+	border-radius: 1px;
+	font-size: 12px;
+	font-style: italic;
+	font-family: cursive;
+}
+div#right_column input#show_grid,
+div#right_column canvas#grid {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Heroes of Paranormal Energy</title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="public/style.css"/>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="socket.io/socket.io.js"></script>
+	<script src="public/components.js"></script>
+	<script src="public/client.js"></script>
+</head>
+<body>
+
+	<div id="wrapper">
+		<section id="menu">
+			<h2 class="menu_title">Heroes of Paranormal Energy</h2>
+			<nav>
+				<ul>
+					<li id="createRoom" class="userSelect">Create room</li>
+					<li id="listRooms" class="userSelect">Join room</li>
+					<li id="showInfo" class="userSelect">Info</li>
+					<li class="userSelect">Settings</li>
+				</ul>
+			</nav>
+		</section>
+		<section id="room" class="hidden">
+			<h2 class="room_title">Heroes of Paranormal Energy</h2>
+			<div id="roomData" class="roomFade">
+				<label for="roomName">Room name</label><input id="roomName" class="focusout" type="text" spellcheck="false"/>
+				<label for="roomPass">Password</label><input id="roomPass" class="focusout" type="password" spellcheck="false"/>
+				<span id="invite" class="userSelect">Invite</span>
+			</div>
+			<div id="roomPlayer" class="roomFade">
+				<figure id="playerProfile">
+					<img id="profilePicture" src="/public/images/warrior.png" alt="" title=""/>
+					<figcaption>profile</figcaption>
+				</figure>
+				<div id="playerInfo">
+					<label for="playerName">Name</label><input type="text" id="playerName" class="focusout" spellcheck="false"/>
+					<label for="race">Race</label>
+					<select id="race">
+						<option value="Human">Human</option>
+						<option value="Elf">Elf</option>
+						<option value="Dwarf">Dwarf</option>
+						<option value="Orc">Orc</option>
+						<option value="Undead">Undead</option>
+						<option value="Daemon">Daemon</option>
+					</select>
+					<label for="hero">Hero</label>
+					<select id="hero">
+						<option value="Warrior">Warrior</option>
+						<option value="Mage">Mage</option>
+						<option value="Assasin">Assasin</option>
+						<option value="Priest">Priest</option>
+						<option value="Hunter">Hunter</option>
+					</select>
+					<article class="mainDesc">
+						<p></p>
+					</article>
+					<article class="altDesc">
+						<p></p>
+					</article>
+					<span id="playerReady" class="userSelect">ready</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div id="roomEnemies" class="roomFade">
+				<ul>
+					<li>-</li>
+					<li>-</li>
+					<li>-</li>
+				</ul>
+			</div>
+			<div id="roomChat" class="roomFade">
+				<div id="roomConversation">
+					<p>Room chat...</p>
+				</div>
+				<input id="roomMessage" type="text" class="focusout"/>
+				<button id="roomSend" class="userSelect">Send</button>
+			</div>
+			<div id="roomNav">
+				<span id="leaveRoom" class="back userSelect">back to main menu</span>
+				<span class="userSelect" id="start">start</span>
+			</div>
+		</section>
+		<section id="roomList" class="hidden">
+			<div id="rlHeader">
+				<span class="rlID">ID</span>
+				<span class="rlName">Name</span>
+				<span class="rlPlayers">Players</span>
+				<span class="rlState">State</span>
+				<span class="rlJoin">Join</span>
+			</div>
+			<div id="rlPageContent"><ul></ul></div>
+			<div id="rlPager"><ul></ul></div>
+			<span id="rlBackToMain" class="back userSelect">back to main menu</span>
+		</section>
+		<section id="info" class="hidden">
+			<div id="infoInner">
+				<h2 id="infoTitle">Heroes of Paranormal Energy</h2>
+				<h3 class="infoAltTitle">Heroes</h3>
+				<section class="infoContentBox">
+					<figure>
+						<img src="/public/images/warrior.png" alt="" title=""/>
+						<figcaption>Warrior</figcaption>
+					</figure>
+					<article>
+						<p></p>
+					</article>
+				</section>
+				<section class="infoContentBox">
+					<figure>
+						<img src="/public/images/dennis.png" alt="" title=""/>
+						<figcaption>Mage</figcaption>
+					</figure>
+					<article>
+						<p></p>
+					</article>
+				</section>
+				<section class="infoContentBox">
+					<figure>
+						<img src="/public/images/henry.png" alt="" title=""/>
+						<figcaption>Assasin</figcaption>
+					</figure>
+					<article>
+						<p></p>
+					</article>
+				</section>
+				<section class="infoContentBox">
+					<figure>
+						<img src="/public/images/priest.png" alt="" title=""/>
+						<figcaption>Priest</figcaption>
+					</figure>
+					<article>
+						<p></p>
+					</article>
+				</section>
+				<section class="infoContentBox">
+					<figure>
+						<img src="/public/images/hunter.png" alt="" title=""/>
+						<figcaption>Hunter</figcaption>
+					</figure>
+					<article>
+						<p></p>
+					</article>
+				</section>
+			</div>
+			<span id="backFromInfo" class="back userSelect">back to main menu</span>
+		</section>
+		<section id="settings" class="hidden">
+			
+		</section>
+		<div id="roomWarning" class="hidden warnings"></div>
+	</div>
+	<div id="inviteBox" class="hidden roomBox">
+		<p id="invText">You have got an invitation to a room:</p>
+		<p id="invRoomName"></p>
+		<button class="invAccept userSelect">Accept</button>
+		<button id="disableNotifactions" class="userSelect">Disable notifications</button>
+		<span id="invBoxClose" class="roomBoxClose userSelect">X</span>
+	</div>
+	<div id="tryEnter" class="hidden roomBox">
+		<label for="tryPass" class="userSelect">Password: </label>
+		<input id="tryPass" type="password"/>
+		<button class="tryJoin userSelect">Join</button>
+		<span id="tryBoxClose" class="roomBoxClose userSelect">X</span>
+	</div>
+	<div id="game">
+		<div id="gameTable">
+			<canvas id="tableContent" class="gt userSelect">Sorry, your browser doesn't support the HTML5 canvas tag :/</canvas>
+			<canvas id="tableForeground" class="gt userSelect">Sorry, your browser doesn't support the HTML5 canvas tag :/</canvas>
+			<canvas id="tableAnimations" class="gt userSelect">Sorry, your browser doesn't support the HTML5 canvas tag :/</canvas>
+		</div>
+		<div id="gameMenu">
+			<div id="gameLog" class="gameBox"><div id="logFix"></div></div>
+			<div id="gameChat" class="gameBox">
+				<div id="gameConversation"></div>
+				<input id="gameMessage" type="text" class="focusout"/>
+				<button id="gameSend" class="userSelect">Send</button>
+			</div>
+			<div id="gameNav">
+				<ul id="abilities"></ul>
+				<button id="mana" class="gameNavButton"><span>mana</span></button>
+				<button id="selected" class="gameNavButton"><span>selected</span></button>
+				<button id="ability" class="gameNavButton"><span>ability</span></button>
+				<button id="endTurn" class="userSelect">done!</button>
+			</div>
+		</div>
+		<div id="gameWarning" class="hidden warnings"></div>
+		<div id="infoBox" class="hidden"></div>
+		<div id="abilityDesc" class="hidden"></div>
+	</div>
+
+</body>
+</html>

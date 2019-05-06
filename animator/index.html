@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Animator</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="layout.css" />
+</head>
+<body>
+	<div id="left_column">
+		<canvas id="c" width="400" height="600"></canvas>
+	</div>
+	
+	<div id="middle_column">
+		<div id="options">
+			<div id="edit_box" class="option_row">
+				<p>
+					<label for="width">Width: </label>
+					<input id="width" type="number" value="400" />
+					<select id="size_unit">
+						<option value="px" selected>px</option>
+						<option id="size_unit_percent" value="percent" disabled>percent</option>
+					</select>
+				</p>
+				<p>
+					<label for="height">Height: </label>
+					<input id="height" type="number" value="600" />
+				</p>
+				<p>
+					<label for="rows">Rows: </label>
+					<input id="rows" type="number" value="1" />
+				</p>
+				<p>
+					<label for="cols">Columns: </label>
+					<input id="cols" type="number" value="1" />
+				</p>
+				<p>
+					<label for="prescaler">Prescaler: </label>
+					<input id="prescaler" type="number" value="10" />
+				</p>
+				
+				<button id="edit">edit!</button>
+			</div>
+			<div id="frames_box" class="option_row">
+				<select id="frame_type">
+					<option value="between" selected>between</option>
+					<option value="mixed">mixed</option>
+				</select>
+				<div id="frames_between">
+					<p>
+						<label for="first">first frame: </label>
+						<input id="first" type="number" value="1" />
+					</p>
+					<p>
+						<label for="last">last frame: </label>
+						<input id="last" type="number" value="1" />
+					</p>
+				</div>
+				<div id="frames_mixed" class="hidden">
+					<p>
+						<label for="mixed">mixed: <a id="frames_mixed_help" href="#" title="comma separated, eg: 1,5,2,3">?</a></label>
+						<input id="mixed" type="text" value="1" />
+					</p>
+				</div>
+			</div>
+			<div id="upload_box" class="option_row">
+				<label for="source">Source: </label>
+				<input id="source" type="file" />
+			</div>
+			<div class="">
+				<button id="stop">stop</button>
+				<button id="start">start</button>
+			</div>
+		</div>
+		
+		<div id="info_box">
+			<div>image width: <span id="info_width">N/A</span></div>
+			<div>image height: <span id="info_height">N/A</span></div>
+		</div>
+	</div>
+	
+	<div id="right_column" class="hidden">
+		<figure id="figura">
+			<img id="source_view" src="" />
+			<figcaption id="source_name">Jan Nemec</figcaption>
+			<canvas id="grid" width="0" height="0" class="hidden"></canvas>
+		</figure>
+		
+		<input id="show_grid" type="checkbox" />
+	</div>
+
+	<script>
+		'use strict';
+		
+		var
+			doc = window.document,
+			body = doc.body,
+			canvas = _id('c'),
+			ctx = canvas.getContext('2d'),
+			grid = _id('grid'),
+			gridContext = grid.getContext('2d'),
+			img = new Image(),
+			frame = 0,
+			tick = 0,
+			frameType = 'between',
+			r, c, p,
+			pxWidth = _get('width'),
+			pxHeight = _get('height'),
+			pcWidth = 100,
+			pcHeight = 100,
+			animation
+		;
+		
+		window._requestAnimationFrame =
+			window.requestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+			window.oRequestAnimationFrame;
+		
+		init();
+		
+		function init() {
+			_set();
+			_id('edit').addEventListener('click', _set);
+			
+			_id('source').addEventListener('change', function(e) {
+				imageLoader(e.target.files[0], function() {
+					_id('info_width').textContent = img.width + ' px';
+					_id('info_height').textContent = img.height + ' px';
+					
+					_id('size_unit_percent').disabled = false;
+					
+					_id('source_view').src = img.src;
+					_id('source_name').textContent = e.target.files[0].name;
+					_id('right_column').className = '';
+				});
+			});
+			
+			_id('source_view').addEventListener('load', function() {
+				grid.width = this.clientWidth;
+				grid.height = this.clientHeight;
+				
+				drawGrid();
+			});
+			
+			_id('start').addEventListener('click', loop);
+			_id('stop').addEventListener('click', function() {
+				window.cancelAnimationFrame(animation);
+			});
+			
+			_id('frame_type').addEventListener('change', function() {
+				_id('frames_mixed').className = _id('frames_between').className = 'hidden';
+				_id('frames_' + this.value).className = '';
+				
+				frameType = this.value;
+			});
+			
+			_id('size_unit').addEventListener('change', function() {
+				if (this.value === 'px') {
+					_id('width').value = pxWidth;
+					_id('height').value = pxHeight;
+				} else {
+					_id('width').value = pcWidth;
+					_id('height').value = pcHeight;
+				}
+			});
+			
+			_id('show_grid').addEventListener('change', function() {
+				grid.className = this.checked ? '' : 'hidden';
+			});
+		}
+		
+		function loop() {
+			var mixd, actualFrame;
+			
+			if (!img.complete || img.src === '') return void 0;
+			
+			animation = window._requestAnimationFrame(loop);
+			
+			if (++tick < p) return void 0;
+			tick = 0;
+
+			++frame;
+			
+			if (frameType === 'between') {
+				if (frame > _get('last')) frame = _get('first');
+				actualFrame = frame - 1;
+			} else {
+				mixd = _id('mixed').value.split(',');
+				if (frame >= mixd.length) frame = 0;
+				
+				actualFrame = +mixd[frame] - 1;
+			}
+			
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			
+			ctx.drawImage(
+				img,
+				(actualFrame % c) * img.width / c, (actualFrame / c | 0) * img.height / r,
+				img.width / c, img.height / r,
+				0, 0,
+				canvas.width, canvas.height
+			);
+		}
+		
+		function _get(key) {
+			return +_id(key).value;
+		}
+		
+		function _set() {
+			r = _get('rows');
+			c = _get('cols');
+			p = _get('prescaler');
+			
+			if (_id('size_unit').value === 'px') {
+				pxWidth = _get('width');
+				pxHeight = _get('height');
+				
+				canvas.width = pxWidth;
+				canvas.height = pxHeight;
+			} else {
+				pcWidth = _get('width');
+				pcHeight = _get('height');
+				
+				canvas.width = pcWidth * img.width / c / 100 | 0;
+				canvas.height = pcHeight * img.height / r / 100 | 0;
+			}
+			
+			drawGrid();
+		}
+		
+		function _id(id) {
+			return doc.getElementById(id);
+		}
+		
+		function imageLoader(file, callback) {
+			var reader;
+			
+			if (file && file.type.substr(0, 5) === 'image') {
+				reader = new FileReader();
+				
+				reader.onload = function(e) {
+					img.addEventListener('load', callback);
+					img.src = e.target.result;
+				};
+
+				reader.readAsDataURL(file);
+			}
+		}
+		
+		function drawGrid() {
+			if (!grid.width || !grid.height) return void 0;
+			
+			gridContext.clearRect(0, 0, grid.width, grid.height);
+			gridContext.beginPath();
+			
+			for (var i = 0; i <= grid.width; i += grid.width / c) {
+				gridContext.moveTo(i, 0);
+				gridContext.lineTo(i, grid.height);
+			}
+			
+			for (var i = 0; i <= grid.height; i += grid.height / r) {
+				gridContext.moveTo(0, i);
+				gridContext.lineTo(grid.width, i);
+			}
+			
+			gridContext.stroke();
+		}
+	</script>
+</body>
+</html>

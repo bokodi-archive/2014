@@ -1,0 +1,104 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+}
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: block;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	*zoom: 1;
+}
+header, section, footer, aside, nav, article, figure {
+	display: block;
+}
+ol, ul {
+	list-style-type: none;
+}
+hr {
+	border-style: inset;
+	border-width: 1px;
+}
+a {
+	text-decoration: none;
+}
+body {
+	background-color: #fafafa;
+	font-family: "Helvetica Neue", Arial, adelle-sans, sans-serif;
+	color: #000;
+	overflow: hidden;
+}
+#wrapper {
+	width: 96%;
+	margin: 20px auto 0 auto;
+}
+#header {
+	margin: 0 0 20px 0;
+}
+#options form fieldset {
+	display: block;
+	padding: 15px 10px 10px 10px;
+	border: 2px solid rgba(33, 33, 33, 0.4);
+	background-color: #F5F3E5;
+	box-shadow: 1px 1px 5px 0px rgba(32, 32, 32, 0.4);
+}
+#settings {
+	font-size: 18px;
+	letter-spacing: 2px;
+	font-family: Tahoma;
+	padding: 1px 5px;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	background: rgb(226, 226, 200);
+	cursor: pointer;
+}
+#settings:hover {
+	background: #D0E1FF;
+}
+#optionsbox {
+	height: 180px;
+	overflow: hidden;
+	transition: height 0.5s linear;
+}
+#optionsbox.nullheight {
+	height: 0px;
+}
+#options form fieldset p {
+	margin-left: 10px;
+}
+#options form fieldset hr {
+	margin: 5px 0 10px 10px;
+}
+#options form fieldset p label {
+	width: 20%;
+	min-width: 150px;
+	display: inline-block;
+}
+#options form fieldset p input {
+	padding: 2px 3px;
+	border-radius: 2px;
+	box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.2) inset;
+	border: 1px solid rgba(0,0,0,0.3);
+}
+#options form fieldset button {
+	padding: 2px 6px 3px 6px;
+	border: 2px outset buttonface;
+	cursor: pointer;
+	margin: 20px 0 5px 10px;
+}
+#mazebox {
+	margin: 30px auto 0 auto;
+	text-align: center;
+}
+#mazeCanvas {
+	border: 2px solid rgba(92, 92, 92, 0.5);
+	box-shadow: 1px 1px 2px 0px rgba(100,100,60,0.3);
+	background-color: rgb(242, 248, 253);
+}
+
+

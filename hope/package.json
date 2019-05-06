@@ -1,0 +1,12 @@
+{
+	"name": "HOPE",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Heroes of Paranormal Energy - online multiplayer strategy game",
+	"dependencies": {
+		"socket.io": "0.9.15",
+		"express": "3.5.0",
+		"node-fs": "0.1.7"
+	},
+	"author": "Bokodi Gábor"
+}
